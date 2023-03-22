@@ -6,7 +6,7 @@
 
 const port = ( process.env.port || 8080 ) ;
 
-const housingDatabase = mysql.createconnection(
+const housingDatabase = mysql.createConnection(
   {
     host: "host" , 
     user: "root" , 
