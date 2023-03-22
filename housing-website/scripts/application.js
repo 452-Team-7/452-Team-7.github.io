@@ -16,20 +16,20 @@ const housingDatabase = mysql.createConnection(
 )
 
 housingDatabase.connect(function(err) {
- if(err) throw err; 
- console.log(result); 
+ if(err) throw err ; 
+ console.log(result) ; 
 
  housingDatabase.query("CREATE TABLE LISTING(Price MONEY, Location VARCHAR(100), Availability BOOL, Transportation VARCHAR(100), Rooms SMALLINT" ,
  function(err, result){
  if(err) throw err ; 
- console.log("New table created"); }); // table created in database
+ console.log("New table created") ; }) ; // table created in database
 
  housingDatabase.query("insert into listing(Price , Location, Availability, Transportation, Rooms) values(100.67 , 'Rutgers' , 1 , 'Bus' , 3) " ,
  function(err , result){
  if(err) throw err ; 
- console.log("Inserted into table") ; });
+ console.log("Inserted into table") ; }) ;
 })
-console.log("connected"); 
+console.log("connected") ; 
 
 function applicationServer( request , response ) 
 {
@@ -38,5 +38,5 @@ function applicationServer( request , response )
  response.end() ; 
 } // idk
 
-const webServer = http.createServer(applicationServer); 
-webServer.listen(port);
+const webServer = http.createServer(applicationServer) ; 
+webServer.listen(port) ;
