@@ -40,7 +40,3 @@ function applicationServer( request , response )
 
 const webServer = http.createServer(applicationServer) ; 
 webServer.listen(port) ;
-
-//this is a test
-
-
