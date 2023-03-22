@@ -1,19 +1,16 @@
-const http = require("http") ;
-
-const querystring = require('querystring') ; 
-
-const mysql = require('mysql') ;
-
-const port = ( process.env.port || 8080 ) ;
+const http = require("http");
+const querystring = require('querystring'); 
+const mysql = require('mysql');
+const port = (process.env.port || 8080); // Port = 8080.
 
 const housingDatabase = mysql.createConnection(
- {
-   host: "localhost" , 
-   user: "root" , 
-   password: "your_root_password" ,
-   dataBase: "HousingDatabse" 
- }
-)
+  {
+    host: "localhost",
+    user: "root",
+    password: "your_root_password",
+    dataBase: "Housing_Databse"
+  }
+) // MySQL database
 
 housingDatabase.connect(function(err) {
  if(err) throw err ; 
@@ -37,6 +34,5 @@ function applicationServer( request , response )
  response.write('Hello World') ; 
  response.end() ; 
 } // idk
-
-const webServer = http.createServer(applicationServer) ; 
-webServer.listen(port) ;
+const webServer = http.createServer(applicationServer);
+webServer.listen(port);
