@@ -66,6 +66,15 @@ function applicationServer(request, response)
       }
     );
   }
+  else if(request.method === 'POST' && request.url === '/signup'){
+    console.log(request.body);
+
+
+
+  }
+  else if(request.message === 'GET' && request.url === '/login'){
+
+  }
   else
   {
     response.writeHead(404, {'Content-Type': 'text/plain'});
