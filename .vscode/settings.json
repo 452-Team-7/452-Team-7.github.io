@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 8080,
+            "driver": "MySQL",
+            "name": "housingDatabase",
+            "database": "Housing_Database",
+            "username": "root",
+            "password": "your_root_password"
+        }
+    ]
+}
