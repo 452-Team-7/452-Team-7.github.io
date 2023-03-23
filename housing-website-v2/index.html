@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+    <h1>
+      Housing Finder
+    </h1>
+    <p>
+      Welcome to Housing Finder!
+    </p>
+    <script>
+      function login()
+      {
+        var username=prompt("Enter your username");
+        var password=prompt("Enter your password");
+        if(username=="Anthony" && password=="password")
+        {
+          alert("Login successful");
+        }
+        else{
+          alert("Login failed. Enter valid username or password");
+        }
+      }
+    </script>
+    <script> function register()
+    {
+      window.location.href='register.html';
+    }
+      </script>
+    <style>
+      p
+      {
+        color: blue;
+      }
+    </style>
+    <button id = "loginButton" onclick = "login()">
+      Login
+    </button>
+    <button id = "registerButton" onclick = "register()">
+      Register
+    </button>
+    <title>
+      SE Project Demo 1
+    </title>
+    <link rel = "stylesheet" href = "styles/style.css">
+  </head>
+  <body>
+    <script src = "scripts/application.js">
+    </script>
+  </body>
+</html>
