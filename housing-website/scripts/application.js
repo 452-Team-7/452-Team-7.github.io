@@ -12,27 +12,27 @@ const housingDatabase = mysql.createConnection(
 ); // MySQL database
 housingDatabase.connect(function(err)
   {
-    // if(err)
-    // {
-    //   throw err;
-    // }
+    if(err)
+    {
+      throw err;
+    }
     console.log("Housing database connected."); // Checks for connection.
     housingDatabase.query("CREATE TABLE LISTING(price FLOAT, location CHAR(100), availability BOOL, transportation CHAR(100), rooms INT)", function(err, result)
       {
-        // if(err)
-        // {
-        //   throw err;
-        // }
+        if(err)
+        {
+          throw err;
+        }
         console.log("New table created."); // Checks for table creation.
         housingDatabase.query("SELECT * FROM LISTING");
       }
     );
     housingDatabase.query("insert into listing(Price , Location, Availability, Transportation, Rooms) values(100.67 , 'Rutgers' , 1 , 'Bus' , 3)", function(err , result)
       {
-        // if(err)
-        // {
-        //   throw err;
-        // }
+        if(err)
+        {
+          throw err;
+        }
         console.log("Inserted into table."); // Checks for table insertion.
       }
     );
