@@ -27,12 +27,10 @@ connection.connect(
           }
           console.log("'listing' table created"); // Checks for table creation.
         });
-      // connection.query(
-      //     "INSERT INTO listing(provider_username,street_address,city,state,zipcode,building_type,purchase_type,price,availability,transportation,rooms) values('1','120 Neilson St','New Brunswick','NJ','08091','Apartment','Rent','2000','1','Bus',3)",
-      //     function(err,result){
-      //       if (err) throw err;
-      //       console.log(result);
-      // });
+      connection.query("CREATE TABLE IF NOT EXISTS message(chatroomID INT, sender_username VARCHAR(100), message_content VARCHAR(200), datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",function(err,results){
+        if(err) throw err;
+        console.log("'message' table created");
+      });
       connection.query("CREATE TABLE IF NOT EXISTS chatroom(chatroomID INT AUTO_INCREMENT PRIMARY KEY, participant_one_username VARCHAR(100), participant_two_username VARCHAR(100))",function(err,results){
         if (err) throw err;
         console.log("'chatroom' table created");
@@ -47,8 +45,6 @@ connection.connect(
         if(err) {throw err;}
         console.log("'account' table created");
       });
-
-      
     }
   
 );
@@ -57,11 +53,11 @@ connection.connect(
 
 
 app.get('/',function(req,res){
-    res.send('Hello World');
+    res.send('Welcome to housing');
 });
 
+
 app.post('/signup',function(req,res){
-    console.log('signup request recieved');
     const new_username = req.body.username;
     const new_password = req.body.password;
     const new_role = req.body.role;
@@ -182,9 +178,8 @@ app.post('/listings/post-review',function(req,res){
     }
   });
   
-  // DO WE WANT TO RETURN ALL THE REVIEWS OR JUST SHOW THAT IT WAS SUCESSFULLY DONE?
-  var place_review = 
-    "INSERT INTO reviews(username,street_address,city,state,review) values(?,?,?,?,?); SELECT * FROM reviews WHERE street_address=? AND city=? AND state=?";
+  
+  var place_review =  "INSERT INTO reviews(username,street_address,city,state,review) values(?,?,?,?,?); SELECT * FROM reviews WHERE street_address=? AND city=? AND state=?";
   connection.query(place_review,[tenant_username,street_address,city,state,review,street_address,city,state,tenant_username],function(err,result){
     if (err) throw err;
     if (result.length!=0){
@@ -253,25 +248,75 @@ app.post('/message/create-chat',function(req,res){
             if (err) throw err;
             res.status(200).send("Chatroom successfully created");
           });
-
-
         }
       });
-
-
-
     }
   });
 });
 
 
 app.get('/message/open-chat',function(req,res){
-  
+  const participant_one_username = req.body.username_one;
+  const participant_two_username = req.body.username_two;
+  // Check if users exist
+  var check_users_exist = "SELECT * FROM account WHERE username=?;SELECT * FROM account WHERE username=?";
+  connection.query(check_users_exist,[participant_one_username,participant_two_username],function(err,result){
+    if (err) throw err;
+    if (result.length != 2 || (result[0].length == 0  || result[1].length == 0) ){
+      res.status(400).send("One or more users does not exist.");
+      return;
+    }
+    
+    else{
 
+      var check_chatroom_exists = "SELECT chatroomID FROM chatroom WHERE (participant_one_username=? AND participant_two_username=?) OR (participant_one_username=? AND participant_two_username=?)";
+      connection.query(check_chatroom_exists,[participant_one_username,participant_two_username,participant_two_username,participant_one_username],function(err,result){
+        if (err) throw err;
+        // A chatroom exists between the two users, get the messaages
+        if (result.length != 0){
+          var get_messages = "SELECT sender_username,message_content FROM message WHERE chatroomID=? ORDER BY datetime ASC";
+          connection.query(get_messages,result[0].chatroomID,function(err,result){
+            console.log(result);
+            res.status(200).send(result);
+          });
+        }
+        // Chatroom does not exist between users, send status 400.
+        else{
+          res.status(400).send("No chat exists between users");
+        }
+      });
 
-
+    }
+  });
 });
 
+
+app.post('/message/send',function(req,res){
+  const sender_username = req.body.sender_username;
+  const receiver_username = req.body.receiver_username;
+  const message_content = req.body.message_content;
+
+  var check_users_exist = "SELECT * FROM account WHERE username=?;SELECT * FROM account WHERE username=?";
+  connection.query(check_users_exist,[sender_username,receiver_username],function(err,result){
+    if (err) throw err;
+    if (result.length != 2 || (result[0].length == 0  || result[1].length == 0) ){
+      res.status(400).send("One or more users does not exist.");
+      return;
+    }
+    var check_chatroom_exists = "SELECT chatroomID FROM chatroom WHERE (participant_one_username=? AND participant_two_username=?) OR (participant_one_username=? AND participant_two_username=?)";
+    connection.query(check_chatroom_exists,[sender_username,receiver_username,receiver_username,sender_username],function(err,result){
+      if(err) throw err;
+      // A chatroom exists between the two users, post the given message
+      if (result.length != 0){
+        var post_message = "INSERT INTO message(chatroomID,sender_username,message_content) values(?,?,?)";
+        connection.query(post_message,[result[0].chatroomID,sender_username,message_content],function(err,result){
+          if (err) throw err;
+          res.status(200).send("Message sent");
+        })
+      }
+    });
+  });  
+});
 
 
 
