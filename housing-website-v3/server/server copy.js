@@ -1,20 +1,16 @@
-// const e = require('express');
+const e = require('express');
 var express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql'); 
 var app = express();
-var bcrypt = require('bcrypt');
-require('dotenv').config();
-
 app.use(express.json());
 const PORT = process.env.PORT || 8080;
 
-
 // connection details for Google Cloud Platform MySQL server
 var connection = mysql.createConnection({
-    host: process.env.DB_IP,
-    user: process.env.DB_USER,
-    password: "",
-    database: process.env.DB_DATABASE,
+    host: '35.221.15.116',
+    user: 'root',
+    password: "Nx565*beC7I&",
+    database: 'housing',
     multipleStatements: true
 });
 
@@ -30,25 +26,26 @@ connection.connect(
           {
             throw err;
           }
+          console.log("'listing' table created"); // Checks for table creation.
         });
 
       connection.query("CREATE TABLE IF NOT EXISTS message(chatroomID INT, sender_username VARCHAR(100), message_content VARCHAR(200), datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",function(err,results){
         if(err) throw err;
-
+        console.log("'message' table created");
       });
       connection.query("CREATE TABLE IF NOT EXISTS chatroom(chatroomID INT AUTO_INCREMENT PRIMARY KEY, participant_one_username VARCHAR(100), participant_two_username VARCHAR(100))",function(err,results){
         if (err) throw err;
-
+        console.log("'chatroom' table created");
       });
 
       connection.query("CREATE TABLE IF NOT EXISTS reviews(username VARCHAR(100),street_address VARCHAR(100),city VARCHAR(100),state VARCHAR(100),review VARCHAR(200), PRIMARY KEY(username,street_address,city,state))",function(err,result){
           if(err) throw err;
-
+          console.log("'reviews' table created");
       });
 
-      connection.query("CREATE TABLE IF NOT EXISTS account(username VARCHAR(100) PRIMARY KEY, password VARCHAR(1000), role VARCHAR(100), salt VARCHAR(1000))",function(err,result){
+      connection.query("CREATE TABLE IF NOT EXISTS account(username VARCHAR(100) PRIMARY KEY, password VARCHAR(100), role VARCHAR(100))",function(err,result){
         if(err) {throw err;}
-
+        console.log("'account' table created");
       });
     }
   
@@ -66,41 +63,21 @@ app.post('/signup',function(req,res){
     const new_username = req.body.username;
     const new_password = req.body.password;
     const new_role = req.body.role;
-
-    /* Email address, phone number */
-
-
+    
     let account_exists = false;
     // Check if a user already exists with the provided username
     var check_user_query = 'SELECT * FROM account WHERE username=?';
-
     connection.query(check_user_query,[new_username],function(err,result){
       if(err) throw err;
-
-
       if (result.length > 0) {
         res.status(409).send({"message": "Account already exists with given username"});
       }
-
-
-      else{     
-
-        bcrypt.genSalt(10,(err,salt) => {
-
-
-          bcrypt.hash(new_password,salt,function(err,hashed_password){
-
-            if (err) throw err;
-
-            var create_user_account = 'INSERT INTO account(username,password,role,salt) VALUES (?,?,?,?)';
-            connection.query(create_user_account,[new_username,hashed_password,new_role,salt],function(err,result){
-              if(err) throw err;
-              res.status(200).send({"message":"Account successfully created"}); 
-            })
-          });
-
-        })
-
+      else{
+        var create_user_account = 'INSERT INTO account(username,password,role) VALUES (?,?,?)';
+        connection.query(create_user_account,[new_username,new_password,new_role],function(err,result){
+          if(err) throw RegExp;
+          res.status(200).send({"message":"Account successfully created"}); 
+        });       
       }
 
     });
@@ -112,26 +89,15 @@ app.post('/login',function(req,res){
   const login_username = req.body.username;
   const login_password = req.body.password;
 
-  var password_query = "SELECT password,salt FROM account WHERE username=?";
-
-  // var credential_check = "SELECT username,password FROM account WHERE username=? AND password=?";
-  connection.query(password_query,[login_username],function(err,results){
+  var credential_check = "SELECT username,password FROM account WHERE username=? AND password=?";
+  connection.query(credential_check,[login_username,login_password],function(err,results){
     if (err) throw err;
   
     if (results.length == 0){
-      res.status(409).send({"message": "Invalid username, no user exists with the given username"})
+      res.status(409).send({"message": "Login unsucessful, please check your credentials and try again"})
     }
     else{
-
-      /* Create hash for the provided password*/
-      bcrypt.hash(login_password,results[0].salt,function(err,hashed_login_password){
-        if( hashed_login_password == results[0].password){
-          res.status(200).send({"message":"Login successful"});
-        }
-        else{
-          res.status(400).send({"message":"Login unsuccessful"});
-        }
-      })
+        res.status(200).send({"message":"Login successful"});
     }
   });
 });
