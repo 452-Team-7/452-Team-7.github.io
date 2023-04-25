@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/employee_dashboard.css" />
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="verify_housing_providers">
+        <h2>Housing Provider Verification Requests:</h2>
+        <div id="form_1">
+            <form method="POST" id="verify_form">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username"></input>
+                </br>
+                <br/>
+                <button type="button" id="accept_button">Accept</button>
+                <button type="button" id="reject_button">Reject</button>
+            </form>
+        </div>
+    </div>
+    <br />
+    <div id="verify_listings">
+        <h2>Listing Verification Requests:</h2>
+        <div id="form_2">
+            <form method="POST" id="verify_listing_form">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username"></input>
+                </br>
+                <br/>
+                <button type="button" id="accept_button">Accept</button>
+                <button type="button" id="reject_button">Reject</button>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="../scripts/employee_dashboard.js"></script>
+    
+</body>
+</html>

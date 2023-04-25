@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <form action="" method="post" id="listing_form">
+
+        <label for="street">Street Address:</label>
+        <input type="text" name="street" id="street"></input>
+    </br>
+
+        <label for="city">City:</label>
+        <input type="text" name="city" id="city"></input>
+    </br>
+</br>
+        
+        <label for="state">State:</label>
+        <input type="text" name="state" id="state"></input>
+    </br>
+</br>
+
+        <label for="zipcode">Zip Code:</label>
+        <input type="text" name="zipcode" id="zipcode"></input>
+    </br>
+</br>
+
+        <label for="building_type">Building Type (Apartment, House or Condo):</label>
+        <input type="text" name="building_type" id="building_type"></input>       
+    </br>
+</br>
+     
+        <label for="purchase_type">Purchase Type (Rent or Sell):</label>
+        <input type="text" name="purchase_type" id="purchase_type"></input>
+    </br>
+</br>
+
+        <label for="price">Price (USD):</label>
+        <input type="text" name="price" id="price"></input>
+    </br>
+</br>
+
+        <label for="availability">Availability (0 for unavailable or 1 for available):</label>
+        <input type="text" name="availability" id="availability"></input>  
+    </br>
+</br>
+
+        <label for="rooms">Number of Rooms:</label>
+        <input type="text" name="rooms" id="rooms"></input>
+    </br>
+</br>
+
+        <label for="description">Description:</label>
+        <input type="text" name="description" id="description"></input>
+    </br>
+</br>
+
+        <label for="deed_or_title">Upload a copy of the Deed or Title for the Property (Only PDF or PNG): </label>
+    </br>
+        <input type="file" name="deed_or_title" id="deed_or_title" accept=".pdf,.png">
+    </br>  
+</br> 
+        <h3>The details for your listing will be verified by an employee. You will be notified once the property has been verified and officially listed</h3>
+        <button id="submit_listing" type="Submit">Submit Listing Request</button>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="../scripts/create-listing.js"></script>
+</body>
+</html>

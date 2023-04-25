@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Only fill out the parts that you would like to search for.</h2>
+    <form method="post" id="search_form">
+        <label for="city">City:</label>
+        <input type="text" name="city" id="city"></input>
+
+        <br/>
+
+        <label for="zipcode">Zip Code:</label>
+        <input type="text" name="zipcode" id="zipcode"></input>
+
+        <label for="state">State:</label>
+        <input type="text" name="state" id="state"></input>
+        
+        <br/>
+
+        <label for="purchase_type">Purchase Type (Rent or Sale):</label>
+        <input type="text" name="purchase_type" id="purchase_type"></input>
+        
+        <button type="button" id="submit_search">Search</button>
+    </form>
+
+    <div id="search_results"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="../scripts/tenant_dashboard.js"></script>
+</body>
+</html>
