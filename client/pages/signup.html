@@ -4,46 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../styles/login_signup.css">
+    <title>Sign Up</title>
 </head>
 <body>
+    <div id="signup">
     <h2>Sign Up!</h2>
-    <form action="" method="post" id="signup_form">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username"></input>
+        <div id="signupform">
+        <form action="" method="post" id="signup_form">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username"></input>
+        </br>
     </br>
-</br>
-        <label for="password">Password:</label>
-        <input type="text" name="password" id="password"></input>
+            <label for="password">Password:</label>
+            <input type="text" name="password" id="password"></input>
+        </br>
     </br>
-</br>
-        <label for="fullname">Full Name:</label>
-        <input type="text" name="fullname" id="fullname"></input>
+            <label for="full_name">Full Name:</label>
+            <input type="text" name="full_name" id="full_name"></input>
+        </br>
     </br>
-</br>
-        <label for="role">Account Type (Tenant or Housing Provider):</label>
-        <input type="text" name="role" id="role"></input>
+            <label for="role">Account Type (Tenant or Housing Provider):</label>
+            <input type="text" name="role" id="role"></input>
+        </br>
     </br>
-</br>
-    <h3>If you are signing up for a Housing Provider account, you are required to provide two forms of ID</h3>
-    <h3>Failure to provide this will result in your account being rejected</h3>
+        <h3>If you are signing up for a Housing Provider account, you are required to provide two forms of ID</h3>
+        <h3>Failure to provide this will result in your account being rejected</h3>
 
-    <label for="first_id">Upload a copy of ID #1 (Only PNG): </label>
-</br>
-</br>
-    <input type="file" name="first_id" id="first_id" accept=".png">
-</br>
-</br>
-    <label for="second_id">Upload a copy of ID #2 (Only PNG): </label>
-</br>
-</br>
-    <input type="file" name="second_id" id="second_id" accept=".png">
+        <label for="first_id">Upload a copy of ID #1 (Only PNG): </label>
+    </br>
+    </br>
+        <input type="file" name="first_id" id="first_id" accept=".png">
+    </br>
+    </br>
+        <label for="second_id">Upload a copy of ID #2 (Only PNG): </label>
+    </br>
+    </br>
+        <input type="file" name="second_id" id="second_id" accept=".png">
 
-    <h3>If you are signing up for a Housing Provider account you will need to wait for an employee to verify your account before you can access the site</h3>
-    <h3>Please give us 48 hours to process your account request</h3>
+        <h3>If you are signing up for a Housing Provider account you will need to wait for an employee to verify your account before you can access the site</h3>
+        <h3>Please give us 48 hours to process your account request</h3>
 
-    <button type="button" id="submit_signup">Sign Up</button>
-    </form>
+        <button type="button" id="submit_signup">Sign Up</button>
+        </form>
+    </div>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="../scripts/signup.js"></script>

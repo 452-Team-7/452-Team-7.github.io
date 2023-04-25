@@ -85,7 +85,7 @@ async function get_listing() {
         } 
 
         else{
-
+            let new_div = document.createElement("div")
             let username = document.createElement("h3")
             let street = document.createElement("h3")
             let city = document.createElement("h3")
@@ -97,12 +97,14 @@ async function get_listing() {
             let rooms = document.createElement("h3")
             let description = document.createElement("h3")
             let purchase_type = document.createElement("h3")
-            let deed_label = (document.createElement("h3").innerHTML = "Deed: ")
-            let deed = document.createElement("a")
+            let deed_label = (document.createElement("h3"))
+            let deed = document.createElement("img")
+
+            localStorage.setItem('city',result[0].city)
+            localStorage.setItem('state',result[0].state)
+            localStorage.setItem('street',result[0].street_address)
 
 
-
-            
             username.innerHTML = "Provider Username: " + result[0].provider_username
             street.innerHTML = "Street: " + result[0].street_address
             city.innerHTML = "City: " + result[0].city
@@ -114,8 +116,9 @@ async function get_listing() {
             rooms.innerHTML = "Rooms: " + result[0].rooms
             description.innerHTML = "Description: " + result[0].description
             purchase_type.innerHTML = "Purchase Type: " + result[0].purchase_type
+            deed_label.innerHTML = "Deed: "
 
-            deed.href = result[0].deed_link
+            deed.src = "/Users/rpatel/Documents/Projects/452_swe_project/server/ids/bob1_ID2.png"
             
             new_div.append(username)
             new_div.append(street)
@@ -135,7 +138,7 @@ async function get_listing() {
             new_div.classList.add("user_details")
             console.log(new_div.classList)
 
-            housing_providers_div.append(new_div)
+            listings_div.append(new_div)
             console.log(housing_providers_div)
         }
 
@@ -194,4 +197,99 @@ document.getElementById('accept_button').addEventListener("click", (e) => {
     }
 
     accept(form)
+})
+
+
+document.getElementById('reject_button').addEventListener("click", (e) => {
+    e.preventDefault()
+    var verify_form = document.forms.verify_form;
+
+    let form = new FormData(verify_form)
+    async function accept(data) {
+
+        try{
+            const response = await fetch ("http://localhost:8080/verify/housing-providers?username="+form.get('username')+"&verified_status=-1", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Access-Control-Allow-Origin':'*'
+                },
+            })
+    
+            if (response.message == "Account status updated, successfully accepted"){
+                alert('Account Successfuly Verified')
+                window.location.reload()
+            }
+        }
+        catch (err) {
+            console.log("Error: " + err)
+        }
+    }
+
+    accept(form)
+})
+
+
+document.getElementById('accept_listing').addEventListener("click", (e) => {
+
+    e.preventDefault()
+    var verify_form = document.forms.verify_form;
+
+    let form = new FormData(verify_form)
+    console.log(localStorage.getItem('street'))
+    async function accept(data) {
+
+        try{
+            const response = await fetch ("http://localhost:8080/verify/listings?city="+localStorage.getItem('city')+"&verified_status=1"+"&state="+localStorage.getItem('state')+"&street="+localStorage.getItem('street'), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Access-Control-Allow-Origin':'*'
+                },
+            })
+    
+            if (response.message == "Listing status sucessfully updated"){
+                alert('Listing status sucessfully updated')
+                window.location.reload()
+            }
+        }
+        catch (err) {
+            console.log("Error: " + err)
+        }
+    }
+
+    accept(form)
+})
+
+
+
+document.getElementById('reject_listing').addEventListener("click", (e) => {
+
+    e.preventDefault()
+    var verify_form = document.forms.verify_form;
+
+    let form = new FormData(verify_form)
+    console.log(localStorage.getItem('street'))
+    async function reject(data) {
+
+        try{
+            const response = await fetch ("http://localhost:8080/verify/listings?city="+localStorage.getItem('city')+"&verified_status=-1"+"&state="+localStorage.getItem('state')+"&street="+localStorage.getItem('street'), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Access-Control-Allow-Origin':'*'
+                },
+            })
+    
+            if (response.message == "Listing status sucessfully updated"){
+                alert('Listing status sucessfully updated')
+                window.location.reload()
+            }
+        }
+        catch (err) {
+            console.log("Error: " + err)
+        }
+    }
+
+    reject(form)
 })

@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../../styles/create_listing.css"
+    <title>Create Listing</title>
 </head>
 <body>
-    
+    <div id="nav-bar">
+        <ul>
+            <li><a href="./create_listing.html">Create Listing</a></li>
+            <li><a href="./my_listings.html">My Listings</a></li>
+            <li><a href="./agreements.html">Agreements</a></li>
+            <li><a href="../message.html">Message</a></li>
+            <li><a href="../logout.html">Log Out</a></li>
+        </ul>
+    </div>
+
+    <h2>Create Listing:</h2>
     <form action="" method="post" id="listing_form">
 
         <label for="street">Street Address:</label>
         <input type="text" name="street" id="street"></input>
     </br>
+</br>
 
         <label for="city">City:</label>
         <input type="text" name="city" id="city"></input>
@@ -69,6 +81,6 @@
     </form>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="../scripts/create-listing.js"></script>
+    <script src="../../scripts/create-listing.js"></script>
 </body>
 </html>

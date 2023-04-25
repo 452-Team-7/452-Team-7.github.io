@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/employee_dashboard.css" />
+    <link rel="stylesheet" href="../../styles/employee_dashboard.css" />
     <title>Document</title>
 </head>
 <body>
-
+    <div id="nav-bar">
+        <ul>
+            <li><a href="./employee_dashboard.html">Verify Requests</a></li>
+            <li><a href="../logout.html">Log Out</a></li>
+        </ul>
+    </div>
     <div id="verify_housing_providers">
         <h2>Housing Provider Verification Requests:</h2>
         <div id="form_1">
@@ -27,18 +32,16 @@
         <h2>Listing Verification Requests:</h2>
         <div id="form_2">
             <form method="POST" id="verify_listing_form">
-                <label for="username">Username:</label>
-                <input type="text" name="username" id="username"></input>
                 </br>
                 <br/>
-                <button type="button" id="accept_button">Accept</button>
-                <button type="button" id="reject_button">Reject</button>
+                <button type="button" id="accept_listing">Accept</button>
+                <button type="button" id="reject_listing">Reject</button>
             </form>
         </div>
 
     </div>
 
-    <script src="../scripts/employee_dashboard.js"></script>
+    <script src="../../scripts//employee_dashboard.js"></script>
     
 </body>
 </html>

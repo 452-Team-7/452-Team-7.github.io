@@ -1,17 +1,22 @@
-document.getElementById('submit_search').addEventListener("click", (e) => {
+document.addEventListener("DOMContentLoaded", (e) => {
+
     var search_form = document.forms.search_form;
 
     let form = new FormData(search_form);
     
+    var username = localStorage.getItem('username')
     console.log(form);
-    console.log("clicked")
 
-    var listing_div = document.getElementById('search_results')
+    let verified_div = document.getElementById('verified_listings')
+    let unverified_div = document.getElementById('unverified_listings')
+
+
+
 
     async function postJSON(data) {
 
         try{
-            const response = await fetch ("http://localhost:8080/listings?zipcode="+form.get('zipcode')+"&city="+form.get('city')+"&state="+form.get('state')+"&purchase_type="+form.get('purchase_type')+"&username=null", {
+            const response = await fetch ("http://localhost:8080/listings?zipcode="+"&city="+"&state="+"&purchase_type="+"&username=" + username, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -19,32 +24,35 @@ document.getElementById('submit_search').addEventListener("click", (e) => {
             })
 
             const result = await response.json()
-
-            let number_verified = 0
-
-            if (listing_div.firstChild) {
-                while(listing_div.firstChild) {
-                    listing_div.removeChild(listing_div.firstChild)
-                }
-
-            }
-
+            
             if (result.length == 0) {
                 /* Created verified listings and unverified listings header*/
                 let ver_header = document.createElement('h2')
-                ver_header.innerHTML = "Listings Found:"
-                listing_div.append(ver_header)
+                ver_header.innerHTML = "Verified Listings:"
+                verified_div.append(ver_header)
                 let v = document.createElement('h3')
-                v.innerHTML = "No listings were found matching your search criteria"
-                listing_div.append(v)
-
+                v.innerHTML = "No verified listings found"
+                verified_div.append(v)
+                let unver_header = document.createElement('h2')
+                unver_header.innerHTML = "Unverified Listings:"
+                unverified_div.append(unver_header)
+                v = document.createElement('h3')
+                v.innerHTML = "No unverified listings found"
+                unverified_div.append(v)
             } 
     
             else{
 
                 let ver_header = document.createElement('h2')
-                ver_header.innerHTML = "Listings Found:"
-                listing_div.append(ver_header)
+                ver_header.innerHTML = "Verified Listings:"
+                verified_div.append(ver_header)
+                let unver_header = document.createElement('h2')
+                unver_header.innerHTML = "Unverified Listings:"
+                unverified_div.append(unver_header)
+
+                let number_verified = 0
+                let number_unverified = 0
+
 
                 for (let i = 0; i < result.length; i++){
 
@@ -88,26 +96,43 @@ document.getElementById('submit_search').addEventListener("click", (e) => {
                     new_div.append(description)
     
                     if (verified_status == 1) {
-                        listing_div.append(new_div)
+                        verified_div.append(new_div)
                         number_verified++
                     }
-
+                    else{
+                        unverified_div.append(new_div)
+                        number_unverified++
+                    }
 
                 }
 
                 if(number_verified == 0){
                     let v = document.createElement('h3')
                     v.innerHTML = "No verified listings found"
-                    listing_div.append(v)
+                    verified_div.append(v)
                 }
+
+                if(number_unverified == 0){
+                    let v = document.createElement('h3')
+                    v.innerHTML = "No unverified listings found"
+                    unverified_div.append(v)
+
+                }
+
+
             }
+
+
+
         }
 
         catch (err) {
             console.log("Error: " + err)
         }
 
+
     }
+
     postJSON(form)
 
 })

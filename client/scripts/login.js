@@ -28,15 +28,16 @@ var submit_buttom = document.getElementById('submit_login').addEventListener("cl
                 localStorage.setItem('username',result.username)
                 localStorage.setItem('role',result.role)
 
+
                 /* Navigate user to the correct dashboard*/
-                if (role == "housing_provider") {
-                    window.location.href = "../pages/housing_provider_dashboard.html"
+                if (result.role == "housing_provider") {
+                    window.location.href = "../pages/housing_provider_client/create_listing.html"
                 }
-                else if (role == "employee") {
-                    window.location.href= "../pages/employee_dashboard.html"
+                else if (result.role == "employee") {
+                    window.location.href= "../pages/employee_client/employee_dashboard.html"
                 }
                 else{
-                    window.location.href = "../pages/tenant_dashboard.html"
+                    window.location.href = "../pages/tenant_client/search_listings.html"
                 }
 
 

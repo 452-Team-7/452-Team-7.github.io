@@ -4,32 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../../styles/tenant_dashboard.css" >
+    <title>Search Listings</title>
 </head>
 <body>
+    <div id="nav-bar">
+        <ul>
+            <li><a href="./search_listings.html">Search Listings</a></li>
+            <li><a href="./agreements.html">My Agreements</a></li>
+            <li><a href="./maintenance_requests.html">Maintenance Requests</a></li>
+            <li><a href="../message.html">Message</a></li>
+            <li><a href="../logout.html">Log Out</a></li>
+        </ul>
+    </div>
+
     <h2>Only fill out the parts that you would like to search for.</h2>
     <form method="post" id="search_form">
         <label for="city">City:</label>
         <input type="text" name="city" id="city"></input>
 
-        <br/>
+    </br>
+</br>
 
         <label for="zipcode">Zip Code:</label>
         <input type="text" name="zipcode" id="zipcode"></input>
 
+    </br>
+</br>
         <label for="state">State:</label>
         <input type="text" name="state" id="state"></input>
         
-        <br/>
+    </br>
+</br>
 
         <label for="purchase_type">Purchase Type (Rent or Sale):</label>
         <input type="text" name="purchase_type" id="purchase_type"></input>
-        
+    </br>
+</br>
         <button type="button" id="submit_search">Search</button>
     </form>
 
     <div id="search_results"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="../scripts/tenant_dashboard.js"></script>
+    <script src="../../scripts/tenant_dashboard.js"></script>
 </body>
 </html>

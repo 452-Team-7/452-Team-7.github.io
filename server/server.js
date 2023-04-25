@@ -200,6 +200,8 @@ app.post('/signup',function(req,res){
 
 
 app.post('/login',function(req,res){
+
+  console.log("recieved");
   const login_username = req.query.username;
   const login_password = req.query.password;
 
@@ -217,6 +219,7 @@ app.post('/login',function(req,res){
       /* Create hash for the provided password*/
       bcrypt.hash(login_password,results[0].salt,function(err,hashed_login_password){
         if( hashed_login_password == results[0].password){
+          
           res.status(200).send({"message":"Login successful","username":''+login_username,"role": results[0].role});
         }
         else{
@@ -239,56 +242,69 @@ app.get('/listings',function(req,res){
   const state = req.query.state
   const city = req.query.city
   const purchase_type = req.query.purchase_type
+  const username = req.query.username
 
-  let first = 0;
 
-  var search_query = "SELECT * FROM listing WHERE "
-  
-  if (zipcode) {
-    if (first > 0) {
-      search_query +="AND "
-    }
-    search_query += ("zipcode=" + zipcode+" ")
-    first++;
-  }
+  if (username != "null") {
+    connection.query("SELECT * FROM listing WHERE provider_username=?",[username],function(err,result) {
+      if (err) throw err
+      res.status(200).send(result)
+    })
 
-  if (state) {
-    if(first > 0) {
-      search_query +="AND "
-    }
-    search_query += ("state=" + state+ " ")
-    first++;
-  }
-
-  if (city) {
-    if(first > 0) {
-      search_query +="AND "
-    }
-    search_query += ("city=" + city + " ")
-    first++;
-  }
-
-  if (purchase_type) {
-    if(first > 0) {
-      search_query += "AND "
-    }
-    search_query += ("purchase_type=" + purchase_type+ " ")
-    first++;
-  }
-
-  if (first == 0){
-    search_query = "SELECT * FROM listing WHERE verified_status=1"
   }
 
   else{
-    search_query += "AND verified_status=1"
+    let first = 0;
+
+    var search_query = "SELECT * FROM listing WHERE "
+    
+    if (zipcode) {
+      if (first > 0) {
+        search_query +="AND "
+      }
+      search_query = search_query +  "zipcode='" + zipcode+ "' "
+      first++;
+    }
+  
+    if (state) {
+      if(first > 0) {
+        search_query +="AND "
+      }
+      search_query = search_query +  "state='" + state+ "' "
+      first++;
+    }
+  
+    if (city) {
+      if(first > 0) {
+        search_query +="AND "
+      }
+      search_query = search_query + "city='" + city + "' "
+      
+      console.log(search_query)
+      first++;
+    }
+  
+    if (purchase_type) {
+      if(first > 0) {
+        search_query += "AND "
+      }
+      search_query += ("purchase_type=" + purchase_type+ " ")
+      search_query = search_query +  "purchase_type='" + purchase_type+ "' "
+      first++;
+    }
+
+    if (first == 0){
+      search_query = "SELECT * FROM listing"
+    }
+  
+    connection.query(search_query,function(err,result) {
+      if (err) throw err
+      res.status(200).send(result)
+    })
+
   }
 
 
-  connection.query(search_query,function(err,result) {
-    if (err) throw err
-    res.status(200).send(result)
-  })
 
   // const search_zipcode = req.body.zipcode;
 
@@ -306,17 +322,6 @@ app.get('/listings',function(req,res){
 
 /* NEED TO TEST */
 app.post('/listings',function(req,res){
-  // const provider_username = req.body.provider_username;
-  // const street_address = req.body.street_address;
-  // const city = req.body.city;
-  // const state = req.body.state;
-  // const zipcode = req.body.zipcode;
-  // const building_type = req.body.building_type;
-  // const purchase_type = req.body.purchase_type;
-  // const price = req.body.price;
-  // const availability = req.body.availability;
-  // const transportation = req.body.transportation;
-  // const rooms = req.body.rooms;
 
   const uploadFolder = path.join(__dirname,"/user_files")
   console.log(uploadFolder)
@@ -326,7 +331,7 @@ app.post('/listings',function(req,res){
   form.maxFileSize = 100 * 1024 * 1024;
   form.parse(req,(err,fields,files) => {
     const provider_username = fields.provider_username
-    const street_address = fields.street_address
+    const street_address = fields.street
     const city = fields.city
     const state = fields.state
     const zipcode = fields.zipcode
@@ -335,11 +340,12 @@ app.post('/listings',function(req,res){
     const price = fields.price
     const availability = fields.availability
     const description = fields.description
-    
+    const rooms = fields.rooms
+    console.log(fields)
 
     // Check if the user trying to place a listing is a housing_provider, only housing_providers can place reviews
     var check_user_role = "SELECT * FROM account WHERE username=? AND role=?";
-    connection.query(check_user_role,[provider_username,"housing-provider"],function(err,result){
+    connection.query(check_user_role,[provider_username,"housing_provider"],function(err,result){
       if (err) throw err;
 
       // User is not a housing_provider
@@ -350,6 +356,7 @@ app.post('/listings',function(req,res){
 
       // User is a housing provider
       else{
+        console.log("Is housing provider")
         // Check if there exists a listing with these details, if it does than another housing_provider owns that listing
         var check_listing = 'SELECT * FROM listing where street_address=? AND city=? AND state=?';
         connection.query(check_listing,[street_address,city,state],function(err,result){
@@ -372,6 +379,7 @@ app.post('/listings',function(req,res){
           lookup.zipcode = zipcode;
           lookup.maxCandidates = 10;
         
+          console.log(lookup)
           client.send(lookup)
             .then((response) => {
               
@@ -662,7 +670,7 @@ app.post('/verify/housing-providers',function(req,res) {
 
 
 app.get('/verify/listings',function (req,res) {
-  console.log("hit")
+  console.log("Getting unverified listings")
   var get_unverified = "SELECT * FROM listing WHERE verified_status=0";
   connection.query(get_unverified,function(err,result) {
     res.status(200).send(result)
@@ -673,13 +681,16 @@ app.get('/verify/listings',function (req,res) {
 
 
 app.post('/verify/listings',function(req,res) {
+  console.log("Verifying listing")
+  const street = req.query.street;
+  const city = req.query.city
+  const state = req.query.state
+  const verified_status = req.query.verified_status
 
-  const street = req.body.street;
-  const city = req.body.city
-  const state = req.body.state
+  console.log(req.query)
 
-  var update_verified = "UPDATE listing SET verified_status=1 WHERE street_address=? AND city=? AND state=?"
-  connection.query(update_verified, [street,city,state], function(err,result){
+  var update_verified = "UPDATE listing SET verified_status=? WHERE street_address=? AND city=? AND state=?"
+  connection.query(update_verified, [verified_status,street,city,state], function(err,result){
     if (err) throw err
     if (result.affectedRows > 0) {
       res.status(200).send({"message":"Listing status sucessfully updated"})

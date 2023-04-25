@@ -1,4 +1,3 @@
-localStorage.setItem('username','bob1')
 var username = localStorage.getItem('username');
 
 var submit_buttom = document.getElementById('submit_listing').addEventListener("click", (e) => {
@@ -6,7 +5,6 @@ var submit_buttom = document.getElementById('submit_listing').addEventListener("
     var listing_form = document.forms.listing_form;
 
     console.log(listing_form);
-
 
     let form = new FormData(listing_form);
     form.append('provider_username',username);
